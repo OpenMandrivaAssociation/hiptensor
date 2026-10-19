@@ -1,13 +1,13 @@
-# Tensor contractions for HIP. TheRock 10.0.
+# Tensor contractions for HIP. TheRock 10.1.
 
 Name:		hiptensor
-Version:	10.0.0
+Version:	10.1.0
 Release:	1
 Summary:	HIP tensor contraction library
 License:	MIT
 Group:		System/Libraries
 URL:		https://github.com/ROCm/rocm-libraries
-Source0:	https://github.com/ROCm/rocm-libraries/releases/download/therock-10.0/hiptensor.tar.gz#/hiptensor-%{version}.tar.gz
+Source0:	https://github.com/ROCm/rocm-libraries/releases/download/therock-10.1/hiptensor.tar.gz#/hiptensor-%{version}.tar.gz
 
 BuildRequires:	rocm-rpm-macros
 BuildRequires:	cmake
