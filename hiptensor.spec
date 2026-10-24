@@ -70,6 +70,8 @@ rm -rf build
 %files
 %license LICENSE
 %doc README.md
+# cmake installs a second copy. %license already owns LICENSE.
+%exclude %{_docdir}/hiptensor/LICENSE
 %{_libdir}/libhiptensor.so.*
 
 %files devel
