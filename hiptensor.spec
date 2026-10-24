@@ -68,7 +68,7 @@ export RPM_BUILD_NCPUS
 rm -rf build
 
 %files
-%license LICENSE.md
+%license LICENSE
 %doc README.md
 %{_libdir}/libhiptensor.so.*
 
