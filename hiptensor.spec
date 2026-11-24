@@ -1,4 +1,4 @@
-# Tensor contractions for HIP. TheRock 10.1.
+# Tensor contractions for HIP. TheRock 10.2.
 
 # Fat HIP device instances. -flto plus ninja -j32 SIGKILL'd clang
 # (znver1 680715, x86_64 680716). The rpmbuild timeout is 200000s, so
@@ -12,13 +12,13 @@
 %endif
 
 Name:		hiptensor
-Version:	10.1.0
+Version:	10.2.0
 Release:	1
 Summary:	HIP tensor contraction library
 License:	MIT
 Group:		System/Libraries
 URL:		https://github.com/ROCm/rocm-libraries
-Source0:	https://github.com/ROCm/rocm-libraries/releases/download/therock-10.1/hiptensor.tar.gz#/hiptensor-%{version}.tar.gz
+Source0:	https://github.com/ROCm/rocm-libraries/releases/download/therock-10.2/hiptensor.tar.gz#/hiptensor-%{version}.tar.gz
 
 BuildRequires:	rocm-rpm-macros
 BuildRequires:	cmake
