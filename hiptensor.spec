@@ -1,14 +1,20 @@
 # Tensor contractions for HIP. TheRock 10.2.
 
 # Fat HIP device instances. -flto plus ninja -j32 SIGKILL'd clang
-# (znver1 680715, x86_64 680716). The rpmbuild timeout is 200000s, so
-# the full distro GPU list fits. aarch64 uses the whole builder.
-# x86 stays at 8 jobs so those clang frontends are not killed again.
+# (znver1 680715, x86_64 680716). Each unit compiles every GPU target.
+# 8 jobs on the full list was SIGKILL'd at 116/333 (x86_64 702866 on
+# c64-5). That builder's rpmbuild_timeout is 36000s, not 200000s.
+# hipTensor upstream does not support gfx803, gfx906, or gfx1030.
+# aarch64 builds the RDNA3/4 set at 8 jobs: 32 jobs times 4 arches is
+# more concurrent device compiles than the x86 OOM. x86 also keeps
+# CDNA gfx908/gfx90a/gfx942.
 %define _disable_lto 1
 %ifarch aarch64
-%global ht_ninja_jobs 32
+%global ht_ninja_jobs 8
+%global ht_gpu_targets gfx1100;gfx1101;gfx1200;gfx1201
 %else
 %global ht_ninja_jobs 8
+%global ht_gpu_targets gfx908;gfx90a;gfx942;gfx1100;gfx1101;gfx1102;gfx1200;gfx1201
 %endif
 
 Name:		hiptensor
@@ -49,7 +55,9 @@ export CXX=hipcc
 export CC=clang
 CXXFLAGS=$(printf '%s' "%{optflags}" | sed -E 's/-mfpmath=[^ ]+//g')
 export CXXFLAGS
-%cmake %{rocm_cmake_fhs} %{rocm_cmake_gpu_targets} \
+%cmake %{rocm_cmake_fhs} \
+	-DAMDGPU_TARGETS="%{ht_gpu_targets}" \
+	-DGPU_TARGETS="%{ht_gpu_targets}" \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_CXX_COMPILER=hipcc \
 	-DHIPTENSOR_BUILD_TESTS=OFF \
