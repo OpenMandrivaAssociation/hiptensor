@@ -5,15 +5,20 @@
 # 8 jobs on the full list was SIGKILL'd at 116/333 (x86_64 702866 on
 # c64-5). That builder's rpmbuild_timeout is 36000s, not 200000s.
 # hipTensor upstream does not support gfx803, gfx906, or gfx1030.
-# aarch64 builds the RDNA3/4 set at 8 jobs: 32 jobs times 4 arches is
-# more concurrent device compiles than the x86 OOM. x86 also keeps
-# CDNA gfx908/gfx90a/gfx942.
+# aarch64 builds the RDNA3/4 set at 8 jobs. That published (702910).
+# znver1 published the 8-target list at 8 jobs (702909, 7.9h). x86_64
+# on ryzen9-5 reached 290/333 and Timeout(36000) at 8 jobs (702908),
+# so that arch uses 12 jobs. x86 also keeps CDNA gfx908/gfx90a/gfx942.
 %define _disable_lto 1
 %ifarch aarch64
 %global ht_ninja_jobs 8
 %global ht_gpu_targets gfx1100;gfx1101;gfx1200;gfx1201
 %else
+%ifarch x86_64
+%global ht_ninja_jobs 12
+%else
 %global ht_ninja_jobs 8
+%endif
 %global ht_gpu_targets gfx908;gfx90a;gfx942;gfx1100;gfx1101;gfx1102;gfx1200;gfx1201
 %endif
 
